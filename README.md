@@ -32,16 +32,11 @@
   </a>
 </p>
 
-<p align="center"><big>
-Use old-style (Vue 1.0) event dispatch in Vue 2
-</big></p>
-
-
 The biggest blocker to upgrading to Vue 2 is the fact that Vue 2 does not support
 Vue 1.0's `$broadcast` and`$dispatch` methods, and Vue 2 doesn't come with a drop-in
 replacement for them. This package is that replacement.
 
-It is important to remember that their is a good reason that Vue 2 dropped these methods.
+It is important to remember that there is a good reason that Vue 2 dropped these methods.
 To quote the upgrade guide:
 
 > The problem is event flows that depend on a component's tree structure can be hard to
