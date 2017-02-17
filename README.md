@@ -6,6 +6,11 @@
          alt="NPM Version">
   </a>
 
+  <a href="https://coveralls.io/r/foxbenjaminfox/vue-oldstyle-events">
+    <img src="https://img.shields.io/coveralls/foxbenjaminfox/vue-oldstyle-events.svg?style=flat-square"
+         alt="Coverage Status">
+  </a>
+
   <a href="https://travis-ci.org/foxbenjaminfox/vue-oldstyle-events">
     <img src="https://img.shields.io/travis/foxbenjaminfox/vue-oldstyle-events.svg?style=flat-square"
          alt="Build Status">

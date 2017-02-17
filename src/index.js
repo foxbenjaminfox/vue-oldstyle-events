@@ -105,7 +105,8 @@ const OldstyleEvents = {
 
 export default OldstyleEvents
 
-// Auto install in dist mode
+/* istanbul ignore if */
 if (typeof window !== 'undefined' && window.Vue) {
+  // Auto install in dist mode
   window.Vue.use(OldstyleEvents)
 }
