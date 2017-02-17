@@ -1,6 +1,6 @@
 {
   "name": "vue-oldstyle-events",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Use old-style (Vue 1.0) event dispatch in Vue 2",
   "main": "dist/index.js",
   "files": [
