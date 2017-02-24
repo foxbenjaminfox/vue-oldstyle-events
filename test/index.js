@@ -6,6 +6,7 @@ Vue.use(OldstyleEventbus)
 
 /*
  * Some of the tests are adapted from the original
+25/02/2017 -> 0.4
  * Vue 1.0 tests for $broadcast and $dispatch
  */
 
@@ -82,7 +83,7 @@ test("multi-level $broadcast canceled", t => {
     return false
   })
   child3.$on('test', () => {
-    t.pass('Child3 should not receive propagated (twice) event')
+    t.fail('Child3 should not receive propagated (twice) event')
   })
   vm.$broadcast('test')
 })
@@ -242,4 +243,42 @@ test('Event registered with $once triggers only once', t => {
   child.$dispatch('test-2')
   vm.$emit('test-2')
   parent.$broadcast('test-2')
+})
+
+test("multi-level $broadcast without intermediate event handlers", t => {
+  t.plan(2)
+  const vm = new Vue()
+  const child1 = new Vue({ parent: vm })
+  const child2 = new Vue({ parent: child1 })
+  const child3 = new Vue({ parent: child2 })
+
+  const child4 = new Vue({ parent: vm })
+  const child5 = new Vue({ parent: child4 })
+  child5.$on('test', () => {
+    t.pass('Child5 should receive propagated event')
+  })
+  child3.$on('test', () => {
+    t.pass('Child3 should receive propagated (twice) event')
+  })
+  vm.$broadcast('test')
+})
+
+test("multi-level $dispatch without intermediate event handlers", t => {
+  t.plan(2)
+  const vm = new Vue()
+  const child1 = new Vue({ parent: vm })
+  const child2 = new Vue({ parent: child1 })
+  const child3 = new Vue({ parent: child2 })
+
+  const child4 = new Vue({ parent: vm })
+  const child5 = new Vue({ parent: child4 })
+
+  vm.$on('test-1', () => {
+    t.pass('Self should receive propagated event')
+  })
+  vm.$on('test-2', () => {
+    t.pass('Self should receive propagated (twice) event')
+  })
+  child5.$dispatch('test-1')
+  child1.$dispatch('test-2')
 })

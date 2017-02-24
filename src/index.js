@@ -4,7 +4,30 @@ const prefix = '_oldstyle_events$',
 
 const OldstyleEvents = {
   install (Vue, options) {
-    const on = Vue.prototype.$on
+    const on = Vue.prototype.$on,
+          emit = Vue.prototype.$emit
+
+    Vue.prototype.$emit = function $emit (event, ...data) {
+      const cbs = this._events[event],
+            transmit = !cbs || !cbs.length
+
+      if (event.startsWith(prefix + broadcastPrefix)) {
+        emit.call(this, event, ...data)
+
+        if (transmit) {
+          this.$broadcast(event.slice((prefix + broadcastPrefix).length), ...data)
+        }
+      } else if (event.startsWith(prefix + dispatchPrefix)) {
+        emit.call(this, event, ...data)
+        if (transmit) {
+          this.$dispatch(event.slice((prefix + dispatchPrefix).length), ...data)
+        }
+      } else {
+        emit.call(this, event, ...data)
+      }
+
+      return this
+    }
     Vue.prototype.$on = function $on (event, cb) {
       on.call(this, event, cb)
 
