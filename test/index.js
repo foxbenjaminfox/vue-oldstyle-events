@@ -6,7 +6,6 @@ Vue.use(OldstyleEventbus)
 
 /*
  * Some of the tests are adapted from the original
-25/02/2017 -> 0.4
  * Vue 1.0 tests for $broadcast and $dispatch
  */
 
@@ -17,11 +16,11 @@ test("$broadcast", t => {
   const child1 = new Vue({ parent: vm })
   const child2 = new Vue({ parent: vm })
   const child3 = new Vue({ parent: child1 })
-  child1.$on('test', () => t.pass('Child1 should recive event'))
-  child2.$on('test', () => t.pass('Child2 should recive event'))
-  child3.$on('test', () => t.fail('Child3 should not recive event'))
-  vm.$on('test', () => t.fail('Self should not recive event'))
-  parent.$on('test', () => t.fail('Parent should not recive event'))
+  child1.$on('test', () => t.pass('Child1 should receive event'))
+  child2.$on('test', () => t.pass('Child2 should receive event'))
+  child3.$on('test', () => t.fail('Child3 should not receive event'))
+  vm.$on('test', () => t.fail('Self should not receive event'))
+  parent.$on('test', () => t.fail('Parent should not receive event'))
   vm.$broadcast('test')
 })
 
@@ -40,7 +39,7 @@ test('$broadcast with propagation', t => {
   const child2 = new Vue({ parent: vm })
   const child3 = new Vue({ parent: child1 })
   child1.$on('test', function () {
-    t.pass('Child1 should recive event')
+    t.pass('Child1 should receive event')
     return true
   })
   child2.$on('test', () => t.pass('Child2 should receive event'))
@@ -93,9 +92,9 @@ test("$dispatch", t => {
   const parent = new Vue()
   const vm = new Vue({ parent })
   const child = new Vue({ parent: vm })
-  child.$on('test', () => t.fail('Child should not recive event'))
-  vm.$on('test', () => t.fail('Self should not recive event'))
-  parent.$on('test', () => t.pass('Parent should recive event'))
+  child.$on('test', () => t.fail('Child should not receive event'))
+  vm.$on('test', () => t.fail('Self should not receive event'))
+  parent.$on('test', () => t.pass('Parent should receive event'))
   vm.$dispatch('test')
 })
 
@@ -105,7 +104,7 @@ test('$dispatch with propagation', t => {
   const parent1 = new Vue({ parent: parent2 })
   const vm = new Vue({ parent: parent1 })
   parent1.$on('test', function () {
-    t.pass('Parent1 should recive event')
+    t.pass('Parent1 should receive event')
     return true
   })
   parent2.$on('test', () => t.pass('Parent2 should receive event'))
@@ -118,7 +117,7 @@ test('multi-level $dispatch canceled', t => {
   const parent1 = new Vue({ parent: parent2 })
   const vm = new Vue({ parent: parent1 })
   parent1.$on('test', function () {
-    t.pass('Parent1 should recive event')
+    t.pass('Parent1 should receive event')
     return false
   })
   parent2.$on('test', () => t.fail('Parent2 should not receive event'))
@@ -130,7 +129,7 @@ test('$broadcast, $dispatch, and $emit all work together', t => {
   const parent = new Vue()
   const vm = new Vue({ parent })
   const child = new Vue({ parent: vm})
-  vm.$on('test', data => t.equals(data, 'test-data', 'Recived event with data'))
+  vm.$on('test', data => t.equals(data, 'test-data', 'received event with data'))
   child.$dispatch('test', 'test-data')
   parent.$broadcast('test', 'test-data')
   vm.$emit('test', 'test-data')
@@ -144,13 +143,13 @@ test('events object catches events', t => {
     parent,
     events: {
       'broadcast-test' () {
-        t.pass('Recived broadcast')
+        t.pass('received broadcast')
       },
       'emit-test' () {
-        t.pass('Recived emit')
+        t.pass('received emit')
       },
       'dispatch-test' () {
-        t.pass('Recived dispatch')
+        t.pass('received dispatch')
       }
     }
   })
@@ -165,7 +164,7 @@ test('$off', t => {
   t.plan(18)
 
   function broadcastTest () {
-    t.pass('Recived broadcast')
+    t.pass('received broadcast')
   }
 
   const parent = new Vue()
@@ -174,10 +173,10 @@ test('$off', t => {
     events: {
       'broadcast-test': broadcastTest,
       'emit-test' () {
-        t.pass('Recived emit')
+        t.pass('received emit')
       },
       'dispatch-test' () {
-        t.pass('Recived dispatch')
+        t.pass('received dispatch')
       }
     }
   })
@@ -189,8 +188,8 @@ test('$off', t => {
       .length
   }
 
-  vm.$on('emit-test', () => t.pass('Recived emit on manual handler'))
-  vm.$on('dispatch-test', () => t.pass('Recived dispatch on manual handler'))
+  vm.$on('emit-test', () => t.pass('received emit on manual handler'))
+  vm.$on('dispatch-test', () => t.pass('received dispatch on manual handler'))
 
   t.equals(numberOfKeys(vm._oldstyle_events), 3, '3 oldstyle events registered')
   t.equals(numberOfKeys(vm._events), 9, '9 Vue events registered')
